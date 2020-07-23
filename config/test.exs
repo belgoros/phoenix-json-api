@@ -20,3 +20,6 @@ config :my_app, MyAppWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Speed up the process by decreasing the security settings in test environment
+config :bcrypt_elixir, :log_rounds, 4
