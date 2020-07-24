@@ -49,4 +49,11 @@ defmodule MyAppWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug MyAppWeb.Router
+
+  plug Corsica,
+    # used for Ember JS front-end client
+    origins: "http://localhost:4200",
+    allow_credentials: true,
+    allow_headers: ["Content-Type"],
+    log: [rejected: :error, invalid: :warn, accepted: :debug]
 end
