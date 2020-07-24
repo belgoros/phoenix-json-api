@@ -120,5 +120,4 @@ defmodule MyApp.Auth do
       {:error, "Wrong email or password"}
     end
   end
-
 end
