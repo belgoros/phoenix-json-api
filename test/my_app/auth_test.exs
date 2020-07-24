@@ -7,8 +7,12 @@ defmodule MyApp.AuthTest do
     alias MyApp.Auth.User
 
     @valid_attrs %{email: "some email", is_active: true, password: "some password"}
-    @update_attrs %{email: "some updated email", is_active: false, passsword: "some updated password"}
-    @invalid_attrs %{email: nil, is_active: nil, password: nil }
+    @update_attrs %{
+      email: "some updated email",
+      is_active: false,
+      passsword: "some updated password"
+    }
+    @invalid_attrs %{email: nil, is_active: nil, password: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -62,6 +66,13 @@ defmodule MyApp.AuthTest do
     test "change_user/1 returns a user changeset" do
       user = user_fixture()
       assert %Ecto.Changeset{} = Auth.change_user(user)
+    end
+
+    test "authenticate_user/2 authenticates the user" do
+      user = user_fixture()
+      assert {:error, "Wrong email or password"} = Auth.authenticate_user("wrong email", "")
+      assert {:ok, authenticated_user} = Auth.authenticate_user(user.email, @valid_attrs.password)
+      assert %{user | password: nil} == authenticated_user
     end
   end
 end

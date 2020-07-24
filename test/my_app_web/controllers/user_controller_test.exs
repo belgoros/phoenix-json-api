@@ -16,11 +16,11 @@ defmodule MyAppWeb.UserControllerTest do
     password: "some updated password"
   }
   @invalid_attrs %{email: nil, is_active: nil, password: nil}
-    @current_user_attrs %{
-      email: "some current user email",
-      is_active: true,
-      password: "some current user password"
-    }
+  @current_user_attrs %{
+    email: "some current user email",
+    is_active: true,
+    password: "some current user password"
+  }
 
   def fixture(:user) do
     {:ok, user} = Auth.create_user(@create_attrs)
@@ -40,13 +40,14 @@ defmodule MyAppWeb.UserControllerTest do
   describe "index" do
     test "lists all users", %{conn: conn, current_user: current_user} do
       conn = get(conn, Routes.user_path(conn, :index))
+
       assert json_response(conn, 200)["data"] == [
-        %{
-          "id" => current_user.id,
-          "email" => current_user.email,
-          "is_active" => current_user.is_active
-        }
-      ]
+               %{
+                 "id" => current_user.id,
+                 "email" => current_user.email,
+                 "is_active" => current_user.is_active
+               }
+             ]
     end
   end
 
@@ -60,7 +61,7 @@ defmodule MyAppWeb.UserControllerTest do
       assert %{
                "id" => id,
                "email" => "some email",
-               "is_active" => true,
+               "is_active" => true
              } = json_response(conn, 200)["data"]
     end
 
@@ -82,7 +83,7 @@ defmodule MyAppWeb.UserControllerTest do
       assert %{
                "id" => id,
                "email" => "some updated email",
-               "is_active" => false,
+               "is_active" => false
              } = json_response(conn, 200)["data"]
     end
 
@@ -102,6 +103,44 @@ defmodule MyAppWeb.UserControllerTest do
       assert_error_sent 404, fn ->
         get(conn, Routes.user_path(conn, :show, user))
       end
+    end
+  end
+
+  describe "sign in user" do
+    test "renders user when user credentials are good", %{
+      conn: conn,
+      current_user: current_user
+    } do
+      conn =
+        post(
+          conn,
+          Routes.user_path(conn, :sign_in, %{
+            email: current_user.email,
+            password: @current_user_attrs.password
+          })
+        )
+
+      assert json_response(conn, 200)["data"] == %{
+               "user" => %{
+                 "id" => current_user.id,
+                 "email" => current_user.email
+               }
+             }
+    end
+
+    test "renders errors when user credentials are bad", %{conn: conn} do
+      conn =
+        post(
+          conn,
+          Routes.user_path(conn, :sign_in, %{
+            email: "non-existent email",
+            password: ""
+          })
+        )
+
+      assert json_response(conn, 401)["errors"] == %{
+               "detail" => "Wrong email or password"
+             }
     end
   end
 
