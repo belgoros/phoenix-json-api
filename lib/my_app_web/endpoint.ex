@@ -51,8 +51,7 @@ defmodule MyAppWeb.Endpoint do
   plug MyAppWeb.Router
 
   plug Corsica,
-    # used for Ember JS front-end client
-    origins: "http://localhost:4200",
+    origins: "http://localhost:8080",
     allow_credentials: true,
     allow_headers: ["Content-Type"],
     log: [rejected: :error, invalid: :warn, accepted: :debug]
