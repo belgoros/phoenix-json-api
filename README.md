@@ -1,10 +1,7 @@
 # Phoenx API app example
 
-The app was generated with the following mix command:
-```
-mix phx.new phoenix-json-api --app my_app --module MyApp \
---no-html --no-webpack --binary-id
-```
+The app was created following this [tutorial](https://lobotuerto.com/blog/building-a-json-api-in-elixir-with-phoenix/).
+If you are going to deploy to [Gigalixir](https://gigalixir.com/), there is a typo in the deploy command in the article, which should be instead `git push gigalixir master` (like you do with Heroku).
 
 ### To start your Phoenix server
 
