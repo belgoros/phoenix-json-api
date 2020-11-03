@@ -6,7 +6,7 @@ defmodule MyAppWeb.ErrorView do
   end
 
   def render("500.json", _assigns) do
-    %{errors: %{detail: "Internal server error :("}}
+    %{errors: %{detail: "Internal server error"}}
   end
 
   def render("401.json", %{message: message}) do
